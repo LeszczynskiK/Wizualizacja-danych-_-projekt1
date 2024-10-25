@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import re
 
 # Funkcja do oczyszczania danych
 def clean_data(data):
@@ -46,3 +47,40 @@ def fill_with_last_valid(data):
         else:
             last_valid = data[i]  # Zaktualizuj ostatnią ważną wartość
     return data
+
+#Narysuj fragment przebiegu
+def draw_sample_value_plot_cast(data, title, start=None, end=None):
+    # Jeśli start i end są określone, pobierz dane z tego zakresu
+    if start is not None and end is not None:
+        data = data[start:end]
+    
+    plt.figure()
+    plt.plot(data, marker='o')
+    plt.title(title)
+    plt.xlabel('Numer próbki')
+    plt.ylabel('Wartość')
+    plt.grid()
+    plt.show()
+    
+# Funkcja do identyfikacji nieliczbowych wartości i przedziałów ich występowania
+def check_non_numeric_intervals(data_series, column_name):
+    # Lista indeksów pustych pól lub pól zawierających tylko spacje
+    empty_indices = data_series[data_series.apply(lambda x: pd.isnull(x) or str(x).isspace())].index.tolist()
+    empty_count = len(empty_indices)
+
+    # Funkcja do określania przedziałów
+    def get_ranges(indices):
+        if not indices:
+            return []
+        ranges = []
+        start = indices[0]
+        for i in range(1, len(indices)):
+            if indices[i] != indices[i - 1] + 1:
+                ranges.append((start, indices[i - 1]))
+                start = indices[i]
+        ranges.append((start, indices[-1]))
+        return ranges
+
+    # Znalezienie przedziałów pustych pól
+    empty_ranges = get_ranges(empty_indices)
+    print(empty_ranges)
