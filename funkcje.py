@@ -84,3 +84,13 @@ def check_non_numeric_intervals(data_series, column_name):
     # Znalezienie przedziałów pustych pól
     empty_ranges = get_ranges(empty_indices)
     print(empty_ranges)
+    
+    #Funkcja do rysowania histogramu
+def draw_histogram(data, title, bins=15):
+    plt.figure(figsize=(8, 5))
+    plt.hist(data.dropna(), bins=bins, color='skyblue', edgecolor='black')
+    plt.title(title)
+    plt.xlabel('Wartość')
+    plt.ylabel('Częstość')
+    plt.grid(axis='y', alpha=0.75)
+    plt.show()

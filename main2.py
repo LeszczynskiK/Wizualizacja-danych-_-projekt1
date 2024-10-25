@@ -1,7 +1,7 @@
 # Importowanie bibliotek
 import pandas as pd
 import matplotlib.pyplot as plt
-from funkcje import clean_data, draw_sample_value_plot, calculate_statistics, match_length, fill_with_last_valid, draw_sample_value_plot_cast
+from funkcje import clean_data, draw_sample_value_plot, calculate_statistics, match_length, fill_with_last_valid, draw_sample_value_plot_cast, draw_histogram
 
 # Odczyt danych z pliku Excel
 dataframe1 = pd.read_excel('dane.xlsx', sheet_name='A3')
@@ -99,4 +99,29 @@ for i, stats in enumerate([stats_T1_proba1, stats_T2_proba1, stats_T1_proba2, st
 draw_sample_value_plot_cast((T2_proba2), 'Zależność T2_proba2 od numeru próbki - usuwamy Nan - Fragment',9800,9999)
 #draw_sample_value_plot_cast((T1_proba3), 'Zależność T1_proba3 od numeru próbki - usuwamy Nan - Fragment',20,100)
 #draw_sample_value_plot_cast((T2_proba3), 'Zależność T2_proba3 od numeru próbki - usuwamy Nan - Fragment',20,100)
+
+
+#Rysowanie histogramow
+draw_histogram(T1_proba1, 'Histogram T1_proba1')
+draw_histogram(T2_proba1, 'Histogram T2_proba1')
+draw_histogram(T1_proba2, 'Histogram T1_proba2')
+draw_histogram(T2_proba2, 'Histogram T2_proba2')
+draw_histogram(T1_proba3, 'Histogram T1_proba3')
+draw_histogram(T2_proba3, 'Histogram T2_proba3')
+
+# Obliczanie odchylenia standardowego dla każdej zmiennej
+std_T1_proba1 = T1_proba1.std()
+std_T2_proba1 = T2_proba1.std()
+std_T1_proba2 = T1_proba2.std()
+std_T2_proba2 = T2_proba2.std()
+std_T1_proba3 = T1_proba3.std()
+std_T2_proba3 = T2_proba3.std()
+
+# Wyświetlenie odchyleń standardowych
+print(f"Odchylenie standardowe dla T1_proba1: {std_T1_proba1}")
+print(f"Odchylenie standardowe dla T2_proba1: {std_T2_proba1}")
+print(f"Odchylenie standardowe dla T1_proba2: {std_T1_proba2}")
+print(f"Odchylenie standardowe dla T2_proba2: {std_T2_proba2}")
+print(f"Odchylenie standardowe dla T1_proba3: {std_T1_proba3}")
+print(f"Odchylenie standardowe dla T2_proba3: {std_T2_proba3}")
      
