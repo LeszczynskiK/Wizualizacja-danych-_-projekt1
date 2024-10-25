@@ -94,3 +94,8 @@ def draw_histogram(data, title, bins=15):
     plt.ylabel('Częstość')
     plt.grid(axis='y', alpha=0.75)
     plt.show()
+    
+    #Wprowadz wartosc srednia w puste miejsca
+def fill_with_mean(data):
+    mean_value = data.mean()  # Oblicz średnią
+    return data.fillna(mean_value)
