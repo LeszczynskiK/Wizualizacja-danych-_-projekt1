@@ -14,6 +14,14 @@ T2_proba2 = dataframe1.iloc[:, 10]
 T1_proba3 = dataframe1.iloc[:, 16]
 T2_proba3 = dataframe1.iloc[:, 17]
 
+#Naprawiam braki w liczbach
+T1_proba1=clean_data(T1_proba1)
+T2_proba1=clean_data(T2_proba1)
+T1_proba2=clean_data(T1_proba2)
+T2_proba2=clean_data(T2_proba2)
+T1_proba3=clean_data(T1_proba3)
+T2_proba3=clean_data(T2_proba3)
+
 # Obliczanie statystyk dla każdej zmiennej
 stats_T1_proba1 = calculate_statistics(T1_proba1)
 stats_T2_proba1 = calculate_statistics(T2_proba1)
@@ -22,8 +30,7 @@ stats_T2_proba2 = calculate_statistics(T2_proba2)
 stats_T1_proba3 = calculate_statistics(T1_proba3)
 stats_T2_proba3 = calculate_statistics(T2_proba3)
 
-#Test poprawnosci dzialania na uzupelnianiu brakow danych
-#Po usuwaniu NaN
+#Test poprawnosci dzialania na uzupelnianiu brakow danych - po usuwaniu NaN
 print("Usuwam znaki typu NaN")
 T1_proba1_rozmiar = len(T1_proba1)
 T2_proba1_rozmiar = len(T2_proba1)
@@ -40,16 +47,14 @@ for i, stats in enumerate([stats_T1_proba1, stats_T2_proba1, stats_T1_proba2, st
     print(f"\nStatystyki dla zmiennej {'T1_proba1' if i % 2 == 0 else 'T2_proba1' if i == 1 else 'T1_proba2' if i == 2 else 'T2_proba2' if i == 3 else 'T1_proba3' if i == 4 else 'T2_proba3'}:")
     for name, value in zip(stat_names, stats):
         print(f"{name}: {value.values if isinstance(value, pd.Series) else value}")
-        
-draw_sample_value_plot(clean_data(T1_proba1), 'Zależność T1_proba1 od numeru próbki - usuwamy Nan')
-draw_sample_value_plot(clean_data(T2_proba1), 'Zależność T2_proba1 od numeru próbki - usuwamy Nan')
-
-draw_sample_value_plot(clean_data(T1_proba2), 'Zależność T1_proba2 od numeru próbki - usuwamy Nan')
-draw_sample_value_plot(clean_data(T2_proba2), 'Zależność T2_proba2 od numeru próbki - usuwamy Nan')
-
-draw_sample_value_plot(clean_data(T1_proba3), 'Zależność T1_proba3 od numeru próbki - usuwamy Nan')
-draw_sample_value_plot(clean_data(T2_proba3), 'Zależność T2_proba3 od numeru próbki - usuwamy Nan')
-
+     
+#Wykresy dla wartosci T   
+draw_sample_value_plot((T1_proba1), 'Zależność T1_proba1 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot((T2_proba1), 'Zależność T2_proba1 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot((T1_proba2), 'Zależność T1_proba2 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot((T2_proba2), 'Zależność T2_proba2 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot((T1_proba3), 'Zależność T1_proba3 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot((T2_proba3), 'Zależność T2_proba3 od numeru próbki - usuwamy Nan')
 
 # Rysowanie wykresów dla każdej próbki
 plt.figure(figsize=(12, 6))
@@ -87,7 +92,14 @@ plt.grid()
 plt.tight_layout()  # Dostosowanie układu wykresów
 plt.show()
 
-# Zastosowanie funkcji do każdej zmiennej
+#Dane bez edycji
+T1_proba1 = dataframe1.iloc[:, 2]
+T2_proba1 = dataframe1.iloc[:, 3]
+T1_proba2 = dataframe1.iloc[:, 9]
+T2_proba2 = dataframe1.iloc[:, 10]
+T1_proba3 = dataframe1.iloc[:, 16]
+T2_proba3 = dataframe1.iloc[:, 17]
+# Zastosowanie funkcji do każdej zmiennej - uzupelnij braki ostatnia liczba Valid
 T1_proba1 = fill_with_last_valid(T1_proba1.copy())
 T2_proba1 = fill_with_last_valid(T2_proba1.copy())
 T1_proba2 = fill_with_last_valid(T1_proba2.copy())
@@ -107,15 +119,48 @@ print("Uzupelniam puste miejsca ostatnia liczba Valid")
 print(f"Rozmiary: T1_proba1: {T1_proba1_rozmiar}, T2_proba1: {T2_proba1_rozmiar}, T1_proba2: {T1_proba2_rozmiar}, T2_proba2: {T2_proba2_rozmiar}, T1_proba3: {T1_proba3_rozmiar}, T2_proba3: {T2_proba3_rozmiar}")
 
 
-# Rysowanie wykresów dla każdej próbki z danymi wstawionymi
-draw_sample_value_plot(clean_data(T1_proba1), 'Zależność T1_proba1 od numeru próbki - dane wstawione')
-draw_sample_value_plot(clean_data(T2_proba1), 'Zależność T2_proba1 od numeru próbki - dane wstawione')
+# Rysowanie wykresów dla każdej próbki z danymi (ostatnia liczba Valid)
+draw_sample_value_plot((T1_proba1), 'Zależność T1_proba1 od numeru próbki - dane wstawione')
+draw_sample_value_plot((T2_proba1), 'Zależność T2_proba1 od numeru próbki - dane wstawione')
+draw_sample_value_plot((T1_proba2), 'Zależność T1_proba2 od numeru próbki - dane wstawione')
+draw_sample_value_plot((T2_proba2), 'Zależność T2_proba2 od numeru próbki - dane wstawione')
+draw_sample_value_plot((T1_proba3), 'Zależność T1_proba3 od numeru próbki - dane wstawione')
+draw_sample_value_plot((T2_proba3), 'Zależność T2_proba3 od numeru próbki - dane wstawione')
 
-draw_sample_value_plot(clean_data(T1_proba2), 'Zależność T1_proba2 od numeru próbki - dane wstawione')
-draw_sample_value_plot(clean_data(T2_proba2), 'Zależność T2_proba2 od numeru próbki - dane wstawione')
+#Wykresy po uzupelnieniu brakow ustatnia liczba Valid
+# Wykres 1
+plt.subplot(1, 3, 1)  # 1 wiersz, 3 kolumny, 1. wykres
+T1_matched1, T2_matched1 = match_length(clean_data(T1_proba1), clean_data(T2_proba1))
+plt.plot(T1_matched1, T2_matched1, marker='o', label='Proba 1')
+plt.title('Wykres T1 vs T2 Proba 1 -  dodajemy valid')
+plt.xlabel('T1_proba1')
+plt.ylabel('T2_proba1')
+plt.legend()
+plt.grid()
 
-draw_sample_value_plot(clean_data(T1_proba3), 'Zależność T1_proba3 od numeru próbki - dane wstawione')
-draw_sample_value_plot(clean_data(T2_proba3), 'Zależność T2_proba3 od numeru próbki - dane wstawione')
+# Wykres 2
+plt.subplot(1, 3, 2)  # 1 wiersz, 3 kolumny, 2. wykres
+T1_matched2, T2_matched2 = match_length(clean_data(T1_proba2), clean_data(T2_proba2))
+plt.plot(T1_matched2, T2_matched2, marker='o', color='orange', label='Proba 2')
+plt.title('Wykres T1 vs T2 Proba 2 -  dodajemy Valid')
+plt.xlabel('T1_proba2')
+plt.ylabel('T2_proba2')
+plt.legend()
+plt.grid()
+
+# Wykres 3
+plt.subplot(1, 3, 3)  # 1 wiersz, 3 kolumny, 3. wykres
+T1_matched3, T2_matched3 = match_length(clean_data(T1_proba3), clean_data(T2_proba3))
+plt.plot(T1_matched3, T2_matched3, marker='o', color='green', label='Proba 3')
+plt.title('Wykres T1 vs T2 Proba 3 -  dodajemy valid')
+plt.xlabel('T1_proba3')
+plt.ylabel('T2_proba3')
+plt.legend()
+plt.grid()
+
+plt.tight_layout()  # Dostosowanie układu wykresów
+plt.show()
+
 
 # Obliczanie statystyk dla zmiennych z wstawionymi danymi
 stats_T1_proba1 = calculate_statistics(T1_proba1)
