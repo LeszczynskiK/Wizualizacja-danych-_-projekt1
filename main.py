@@ -1,66 +1,18 @@
-# import pandas lib as pd
+# Importowanie bibliotek
 import pandas as pd
+import matplotlib.pyplot as plt
+from funkcje import clean_data, draw_sample_value_plot, calculate_statistics, match_length, fill_with_last_valid
 
-# read by default 1st sheet of an excel file
+# Odczyt danych z pliku Excel
 dataframe1 = pd.read_excel('dane.xlsx')
 
-#przypisanie danych do zmiennych
-T1_proba1 = dataframe1.iloc[:, 2] 
-T2_proba1 = dataframe1.iloc[:, 3] 
-
-T1_proba2 = dataframe1.iloc[:, 9] 
-T2_proba2 = dataframe1.iloc[:, 10] 
-
-T1_proba3 = dataframe1.iloc[:, 16] 
-T2_proba3 = dataframe1.iloc[:, 17] 
-
-print("T1_proba1")
-print(T1_proba1)
-print("\nT2_proba1")
-print(T2_proba1)
-
-
-print("\nT1_proba2")
-print(T1_proba2)
-print("T\n2_proba2")
-print(T2_proba2)
-
-
-print("\nT1_proba3")
-print(T1_proba3)
-
-print("\nT2_proba3")
-print(T2_proba3)
-
-print("\nStatystyki danych - dla nienumerycznych zastap ostatnia cyfra:\n")
-## Funkcja do zastępowania wartości nie-numerycznych
-def fill_with_last_valid(data):
-    last_valid = None
-    for i in range(len(data)):
-        if pd.isnull(data[i]) or not isinstance(data[i], (int, float)):
-            data[i] = last_valid  # Ustaw wartość na ostatnią ważną
-        else:
-            last_valid = data[i]  # Zaktualizuj ostatnią ważną wartość
-    return data
-
-# Zastosowanie funkcji do każdej zmiennej
-T1_proba1 = fill_with_last_valid(T1_proba1.copy())
-T2_proba1 = fill_with_last_valid(T2_proba1.copy())
-T1_proba2 = fill_with_last_valid(T1_proba2.copy())
-T2_proba2 = fill_with_last_valid(T2_proba2.copy())
-T1_proba3 = fill_with_last_valid(T1_proba3.copy())
-T2_proba3 = fill_with_last_valid(T2_proba3.copy())
-
-# Funkcja do obliczania statystyk
-def calculate_statistics(data):
-    mean = data.mean()
-    data_range = data.max() - data.min()
-    kurtosis = data.kurtosis()
-    median = data.median()
-    skewness = data.skew()
-    #mode = data.mode()
-    
-    return mean, data_range, kurtosis, median, skewness, #mode
+# Przypisanie danych do zmiennych
+T1_proba1 = dataframe1.iloc[:, 2]
+T2_proba1 = dataframe1.iloc[:, 3]
+T1_proba2 = dataframe1.iloc[:, 9]
+T2_proba2 = dataframe1.iloc[:, 10]
+T1_proba3 = dataframe1.iloc[:, 16]
+T2_proba3 = dataframe1.iloc[:, 17]
 
 # Obliczanie statystyk dla każdej zmiennej
 stats_T1_proba1 = calculate_statistics(T1_proba1)
@@ -70,8 +22,111 @@ stats_T2_proba2 = calculate_statistics(T2_proba2)
 stats_T1_proba3 = calculate_statistics(T1_proba3)
 stats_T2_proba3 = calculate_statistics(T2_proba3)
 
+#Test poprawnosci dzialania na uzupelnianiu brakow danych
+#Po usuwaniu NaN
+print("Usuwam znaki typu NaN")
+T1_proba1_rozmiar = len(T1_proba1)
+T2_proba1_rozmiar = len(T2_proba1)
+T1_proba2_rozmiar = len(T1_proba2)
+T2_proba2_rozmiar = len(T2_proba2)
+T1_proba3_rozmiar = len(T1_proba3)
+T2_proba3_rozmiar = len(T2_proba3)
+print(f"Rozmiary: T1_proba1: {T1_proba1_rozmiar}, T2_proba1: {T2_proba1_rozmiar}, T1_proba2: {T1_proba2_rozmiar}, T2_proba2: {T2_proba2_rozmiar}, T1_proba3: {T1_proba3_rozmiar}, T2_proba3: {T2_proba3_rozmiar}")
+
 # Wyświetlenie wyników
-stat_names = ["Średnia", "Rozstęp", "Kurtosis", "Mediana", "Skewness", "Wartość modalna", "Posortowane"]
+print("Wyniki po usunieciu NaN")
+stat_names = ["Średnia", "Rozstęp", "Kurtosis", "Mediana", "Skewness", "Wartość modalna"]
+for i, stats in enumerate([stats_T1_proba1, stats_T2_proba1, stats_T1_proba2, stats_T2_proba2, stats_T1_proba3, stats_T2_proba3]):
+    print(f"\nStatystyki dla zmiennej {'T1_proba1' if i % 2 == 0 else 'T2_proba1' if i == 1 else 'T1_proba2' if i == 2 else 'T2_proba2' if i == 3 else 'T1_proba3' if i == 4 else 'T2_proba3'}:")
+    for name, value in zip(stat_names, stats):
+        print(f"{name}: {value.values if isinstance(value, pd.Series) else value}")
+        
+draw_sample_value_plot(clean_data(T1_proba1), 'Zależność T1_proba1 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot(clean_data(T2_proba1), 'Zależność T2_proba1 od numeru próbki - usuwamy Nan')
+
+draw_sample_value_plot(clean_data(T1_proba2), 'Zależność T1_proba2 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot(clean_data(T2_proba2), 'Zależność T2_proba2 od numeru próbki - usuwamy Nan')
+
+draw_sample_value_plot(clean_data(T1_proba3), 'Zależność T1_proba3 od numeru próbki - usuwamy Nan')
+draw_sample_value_plot(clean_data(T2_proba3), 'Zależność T2_proba3 od numeru próbki - usuwamy Nan')
+
+
+# Rysowanie wykresów dla każdej próbki
+plt.figure(figsize=(12, 6))
+
+# Wykres 1
+plt.subplot(1, 3, 1)  # 1 wiersz, 3 kolumny, 1. wykres
+T1_matched1, T2_matched1 = match_length(clean_data(T1_proba1), clean_data(T2_proba1))
+plt.plot(T1_matched1, T2_matched1, marker='o', label='Proba 1')
+plt.title('Wykres T1 vs T2 Proba 1 -  usuwamy Nan')
+plt.xlabel('T1_proba1')
+plt.ylabel('T2_proba1')
+plt.legend()
+plt.grid()
+
+# Wykres 2
+plt.subplot(1, 3, 2)  # 1 wiersz, 3 kolumny, 2. wykres
+T1_matched2, T2_matched2 = match_length(clean_data(T1_proba2), clean_data(T2_proba2))
+plt.plot(T1_matched2, T2_matched2, marker='o', color='orange', label='Proba 2')
+plt.title('Wykres T1 vs T2 Proba 2 -  usuwamy Nan')
+plt.xlabel('T1_proba2')
+plt.ylabel('T2_proba2')
+plt.legend()
+plt.grid()
+
+# Wykres 3
+plt.subplot(1, 3, 3)  # 1 wiersz, 3 kolumny, 3. wykres
+T1_matched3, T2_matched3 = match_length(clean_data(T1_proba3), clean_data(T2_proba3))
+plt.plot(T1_matched3, T2_matched3, marker='o', color='green', label='Proba 3')
+plt.title('Wykres T1 vs T2 Proba 3 -  usuwamy Nan')
+plt.xlabel('T1_proba3')
+plt.ylabel('T2_proba3')
+plt.legend()
+plt.grid()
+
+plt.tight_layout()  # Dostosowanie układu wykresów
+plt.show()
+
+# Zastosowanie funkcji do każdej zmiennej
+T1_proba1 = fill_with_last_valid(T1_proba1.copy())
+T2_proba1 = fill_with_last_valid(T2_proba1.copy())
+T1_proba2 = fill_with_last_valid(T1_proba2.copy())
+T2_proba2 = fill_with_last_valid(T2_proba2.copy())
+T1_proba3 = fill_with_last_valid(T1_proba3.copy())
+T2_proba3 = fill_with_last_valid(T2_proba3.copy())
+
+#Test poprawnosci dzialania na uzupelnianiu brakow danych
+#Po wpisaniu w brakujace miejsca ostatniej liczby valid
+T1_proba1_rozmiar = len(T1_proba1)
+T2_proba1_rozmiar = len(T2_proba1)
+T1_proba2_rozmiar = len(T1_proba2)
+T2_proba2_rozmiar = len(T2_proba2)
+T1_proba3_rozmiar = len(T1_proba3)
+T2_proba3_rozmiar = len(T2_proba3)
+print("Uzupelniam puste miejsca ostatnia liczba Valid")
+print(f"Rozmiary: T1_proba1: {T1_proba1_rozmiar}, T2_proba1: {T2_proba1_rozmiar}, T1_proba2: {T1_proba2_rozmiar}, T2_proba2: {T2_proba2_rozmiar}, T1_proba3: {T1_proba3_rozmiar}, T2_proba3: {T2_proba3_rozmiar}")
+
+
+# Rysowanie wykresów dla każdej próbki z danymi wstawionymi
+draw_sample_value_plot(clean_data(T1_proba1), 'Zależność T1_proba1 od numeru próbki - dane wstawione')
+draw_sample_value_plot(clean_data(T2_proba1), 'Zależność T2_proba1 od numeru próbki - dane wstawione')
+
+draw_sample_value_plot(clean_data(T1_proba2), 'Zależność T1_proba2 od numeru próbki - dane wstawione')
+draw_sample_value_plot(clean_data(T2_proba2), 'Zależność T2_proba2 od numeru próbki - dane wstawione')
+
+draw_sample_value_plot(clean_data(T1_proba3), 'Zależność T1_proba3 od numeru próbki - dane wstawione')
+draw_sample_value_plot(clean_data(T2_proba3), 'Zależność T2_proba3 od numeru próbki - dane wstawione')
+
+# Obliczanie statystyk dla zmiennych z wstawionymi danymi
+stats_T1_proba1 = calculate_statistics(T1_proba1)
+stats_T2_proba1 = calculate_statistics(T2_proba1)
+stats_T1_proba2 = calculate_statistics(T1_proba2)
+stats_T2_proba2 = calculate_statistics(T2_proba2)
+stats_T1_proba3 = calculate_statistics(T1_proba3)
+stats_T2_proba3 = calculate_statistics(T2_proba3)
+
+print("Statystyki po wstawionych danych")
+# Wyświetlenie wyników
 for i, stats in enumerate([stats_T1_proba1, stats_T2_proba1, stats_T1_proba2, stats_T2_proba2, stats_T1_proba3, stats_T2_proba3]):
     print(f"\nStatystyki dla zmiennej {'T1_proba1' if i % 2 == 0 else 'T2_proba1' if i == 1 else 'T1_proba2' if i == 2 else 'T2_proba2' if i == 3 else 'T1_proba3' if i == 4 else 'T2_proba3'}:")
     for name, value in zip(stat_names, stats):
