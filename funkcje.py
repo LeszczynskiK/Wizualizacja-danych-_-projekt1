@@ -105,4 +105,4 @@ def remove_outliers(data):
     mean = data.mean()
     std_dev = data.std()
     # Zatrzymujemy tylko te wartości, które są w zakresie n odchyleń standardowych od średniej
-    return data[(data >= mean - 10 * std_dev) & (data <= mean + 10 * std_dev)]
+    return data[(data >= mean - 5 * std_dev) & (data <= mean + 5 * std_dev)]
