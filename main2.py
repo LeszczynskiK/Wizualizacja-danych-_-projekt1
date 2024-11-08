@@ -1,7 +1,7 @@
 # Importowanie bibliotek
 import pandas as pd
 import matplotlib.pyplot as plt
-from funkcje import clean_data, draw_sample_value_plot, calculate_statistics, match_length, fill_with_last_valid, draw_sample_value_plot_cast, draw_histogram
+from funkcje import clean_data, draw_sample_value_plot, calculate_statistics, match_length, fill_with_last_valid, draw_sample_value_plot_cast, draw_histogram, remove_outliers
 
 # Odczyt danych z pliku Excel
 dataframe1 = pd.read_excel('dane.xlsx', sheet_name='A3')
@@ -14,6 +14,8 @@ T1_proba2 = dataframe1.iloc[:, 9]
 T2_proba2 = dataframe1.iloc[:, 10]
 T1_proba3 = dataframe1.iloc[:, 16]
 T2_proba3 = dataframe1.iloc[:, 17]
+
+
 # Zastosowanie funkcji do każdej zmiennej - uzupelnij braki ostatnia liczba Valid
 T1_proba1 = fill_with_last_valid(T1_proba1.copy())
 T2_proba1 = fill_with_last_valid(T2_proba1.copy())
@@ -21,6 +23,15 @@ T1_proba2 = fill_with_last_valid(T1_proba2.copy())
 T2_proba2 = fill_with_last_valid(T2_proba2.copy())
 T1_proba3 = fill_with_last_valid(T1_proba3.copy())
 T2_proba3 = fill_with_last_valid(T2_proba3.copy())
+
+
+# Usuwanie wartości odstających dla każdej próbki
+T1_proba1 = remove_outliers(T1_proba1)
+T2_proba1 = remove_outliers(T2_proba1)
+T1_proba2 = remove_outliers(T1_proba2)
+T2_proba2 = remove_outliers(T2_proba2)
+T1_proba3 = remove_outliers(T1_proba3)
+T2_proba3 = remove_outliers(T2_proba3)
 
 #Test poprawnosci dzialania na uzupelnianiu brakow danych
 #Po wpisaniu w brakujace miejsca ostatniej liczby valid

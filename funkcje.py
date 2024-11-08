@@ -99,3 +99,10 @@ def draw_histogram(data, title, bins=15):
 def fill_with_mean(data):
     mean_value = data.mean()  # Oblicz średnią
     return data.fillna(mean_value)
+
+# Funkcja do usuwania wartości odstających
+def remove_outliers(data):
+    mean = data.mean()
+    std_dev = data.std()
+    # Zatrzymujemy tylko te wartości, które są w zakresie n odchyleń standardowych od średniej
+    return data[(data >= mean - 10 * std_dev) & (data <= mean + 10 * std_dev)]
