@@ -11,9 +11,11 @@
 
 
 ## Notatki TODO:
+- Więcej opisów
+- Bardzo ciekawe że dla dwóch odchyleń wycina wszystkie próbki, pokazać to też, odchylenie jest bardzo duże (dla  3 odchyleń 99% próbek powinno być w zakresie)
+
+## Done:
 - **Jednostki** na wykresach (WSZYSTKICH, HISTOGRAM TEŻ)
 - Dodać **obwiednie** do histogramu, zobaczyć czy dane są symetryczne
 - Nałożyć na siebie hostogramy lub ich obwiednie żeby porównać
-- Więcej opisów
-- Bardzo ciekawe że dla dwóch odchyleń wycina wszystkie próbki, pokazać to też, odchylenie jest bardzo duże (dla  3 odchyleń 99% próbek powinno być w zakresie)
 - Więcej porównań
