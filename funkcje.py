@@ -1,6 +1,17 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-import re
+import statistics as stat
+from scipy.stats import norm
+import math
+
+def std(series):
+    N = len(series) - 1
+    mean_v = stat.mean(series)
+    std_v = 0.0
+    for value in series:
+        std_v += ((value - mean_v)**2) / N
+    return math.sqrt(std_v)
 
 # Funkcja do oczyszczania danych
 def clean_data(data):
@@ -10,12 +21,12 @@ def clean_data(data):
 
 
 # Wykresy zależności numeru próbki od wartości próbki
-def draw_sample_value_plot(data, title):
-    plt.figure(figsize=(10, 5))
-    plt.plot(data.index, data, marker='o', label='Wartości')
+def draw_sample_value_plot(data, title, unit_x = "", unit_y = ""):
+    plt.figure(figsize=(12, 6))
+    plt.plot(data.index, data, marker='.', label='Wartości')
     plt.title(title)
-    plt.xlabel('Numer próbki')
-    plt.ylabel('Wartość próbki')
+    plt.xlabel(f'Numer próbki {unit_x}')
+    plt.ylabel(f'Wartość próbki {unit_y}')
     plt.legend()
     plt.grid()
     plt.show()
@@ -86,12 +97,19 @@ def check_non_numeric_intervals(data_series, column_name):
     print(empty_ranges)
     
     #Funkcja do rysowania histogramu
-def draw_histogram(data, title, bins=15):
+def draw_histogram(data, title, bins=15, unit = "", skewness = None):
     plt.figure(figsize=(8, 5))
-    plt.hist(data.dropna(), bins=bins, color='skyblue', edgecolor='black')
+    plt.hist(data.dropna(), bins=bins, color='skyblue', edgecolor='black', density=True)
+
+    if skewness != None:
+        mean, std_v = stat.mean(data), std(data)
+        x = np.linspace(min(data), max(data), 1000)
+        fitted_pdf = norm.pdf(x, mean, std_v)
+        plt.plot(x, fitted_pdf, color='red', linestyle='--', linewidth=2)
+
     plt.title(title)
-    plt.xlabel('Wartość')
-    plt.ylabel('Częstość')
+    plt.xlabel(F'Wartość {unit}')
+    plt.ylabel('Gęstość [%]')
     plt.grid(axis='y', alpha=0.75)
     plt.show()
     
