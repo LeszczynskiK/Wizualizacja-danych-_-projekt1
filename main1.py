@@ -1,7 +1,7 @@
 # Importowanie bibliotek
 import pandas as pd
 import matplotlib.pyplot as plt
-from funkcje import clean_data, draw_sample_value_plot, calculate_statistics, match_length, fill_with_last_valid, draw_sample_value_plot_cast,draw_histogram, remove_outliers
+from funkcje import * 
 # Odczyt danych z pliku Excel
 dataframe1 = pd.read_excel('dane.xlsx', sheet_name='A3')
 
