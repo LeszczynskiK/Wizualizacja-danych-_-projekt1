@@ -79,11 +79,12 @@ def check_non_numeric_intervals(data_series, column_name):
     print(empty_ranges)
     
     #Funkcja do rysowania histogramu
-def draw_histogram(data, title, bins=15, unit = ""):
+def draw_histogram(data, raw_data, title, bins=15, unit = ""):
     plt.figure(figsize=(12, 6))
+    data = data.dropna()
     plt.hist(data.dropna(), bins=bins, color='#75bbfd', edgecolor='#0504aa', density=True)
 
-    mean, std_v = stat.mean(data), std(data)
+    mean, std_v = stat.mean(raw_data), std(raw_data)
     x = np.linspace(min(data), max(data), 1000)
     fitted_pdf = norm.pdf(x, mean, std_v)
     plt.plot(x, fitted_pdf, color='red', linestyle='--', linewidth=2)
@@ -159,5 +160,7 @@ def remove_outliers(data, std_mul):
     mean = data.mean()
     std_v = data.std()
     # Zatrzymujemy tylko te wartości, które są w zakresie n odchyleń standardowych od średniej
-    return data[(data >= mean - std_mul * std_v) & (data <= mean + std_mul * std_v)]
+    clean = data[(data >= mean - std_mul * std_v) & (data <= mean + std_mul * std_v)]
+    print(f"Ilość przed czysczeniem {len(data)}, i po czyszczeniu {len(clean)}")
+    return clean
 

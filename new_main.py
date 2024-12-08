@@ -18,7 +18,7 @@ def div():
 # Odczyt danych z pliku Excel
 dataframe = pd.read_excel('dane.xlsx', sheet_name='A3')
 
-series = [
+raw_series = [
     dataframe.iloc[:, 2],
     dataframe.iloc[:, 3],
     dataframe.iloc[:, 9],
@@ -29,21 +29,23 @@ series = [
 
 # Surowe dane 
 for i in range(6):
-    draw_sample_value_plot(series[i], 
+    draw_sample_value_plot(raw_series[i], 
                            f"Surowe dane seria {i//2+1}, pomiar {i%2+1} w zależności od numeru próbki",
                            "", "[℃]")
 
 for i in range(6):
     if main == Main.DELETE_MISSING:
-        series[i] = clean_data(series[i])
+        raw_series[i] = clean_data(raw_series[i])
     elif main == Main.FILL_WITH_LAST_VALID:
-        series[i] = fill_with_last_valid(series[i])
+        raw_series[i] = fill_with_last_valid(raw_series[i])
     elif main == Main.FILL_WITH_MEAN:
-       series[i] = fill_with_mean(series[i])
+       raw_series[i] = fill_with_mean(raw_series[i])
+
+series = [[]]*6
 
 # Usuwanie wartości odstających dla każdej próbk
 for i in range(6):    
-    series[i] = remove_outliers(series[i], 4)
+    series[i] = remove_outliers(raw_series[i], 2)
 
 stats = []
 # Obliczanie statystyk dla każdej zmiennej
@@ -79,6 +81,15 @@ for k in range(len(stat_names) - 1):
                        colors=["#bf77f6", "#9a0eea",
                                "#d5b60a", "#fac205",
                                "#137e6d", "#7af9ab"])
+
+# special treatment for modal values
+draw_bars_for_stat([stats[s][5][0] for s in range(6)],
+                    f"{stat_names[5]} dla wszystkich serii",
+                    [f"seria {i//2+1}, pomiar {i%2+1}" for i in range(6)],
+                    units[5],
+                    colors=["#bf77f6", "#9a0eea",
+                            "#d5b60a", "#fac205",
+                            "#137e6d", "#7af9ab"])
 
 # Wykresy dla wartosci T   
 for i in range(6):
@@ -117,7 +128,9 @@ plt.show()
 
 #Rysowanie histogramow
 for i in range(6):
-    draw_histogram(series[i], f'Histogram seria {i//2+1}, pomiar {i%2+1}',
+    draw_histogram(raw_series[i],raw_series[i], f'Histogram surowa seria {i//2+1}, pomiar {i%2+1}',
+                   unit="[℃]")
+    draw_histogram(series[i],raw_series[i], f'Histogram seria {i//2+1}, pomiar {i%2+1}',
                    unit="[℃]")
 
 draw_envelopes(series, "Obwiednie rozkładów ze wszystkich serii", "[℃]")
